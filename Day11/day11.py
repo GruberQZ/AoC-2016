@@ -25,18 +25,18 @@ def isValidLayout(floors):
     return True
 
 def validateFloor(floor):
-    # Find all of the exposed MCs and unsafe generators
-    exposedMCs = []
-    unsafeGens = []
+    # Find all of the exposed
+    exposedMC = False
+    existsGen = False
     for i in range(len(floor)):
         if i % 2 == 0:
             continue
         if floor[ i ] == None and floor[ i + 1 ] != None:
-            exposedMCs.append(i)
-        elif floor[ i ] != None and floor[ i + 1 ] == None:
-            unsafeGens.append(i)
+            exposedMC = True
+        elif floor[ i ] != None:
+            existsGen = True
     # If there are exposed microchips and unsafe generators, return False
-    if len(exposedMCs) > 0 and len(unsafeGens) > 0:
+    if exposedMC and existsGen:
         return False
     else:
         return True
@@ -68,7 +68,7 @@ def getListOfPossibleOutcomes(floors):
         # Double equipment move
         for firstPos,secondPos in lengthTwoCombinations:
             # Copy original floor layout
-            tempFloors = list(floors)
+            tempFloors = copy.deepcopy(floors)
             # Move first item
             # Move item up one floor
             tempFloors[elevatorPosition + 1][firstPos] = tempFloors[elevatorPosition][firstPos]
@@ -89,7 +89,7 @@ def getListOfPossibleOutcomes(floors):
         # Single equipment move
         for i in occupiedPositions:
             # Copy original floor layout
-            tempFloors = list(floors)
+            tempFloors = copy.deepcopy(floors)
             # Move item up one floor
             tempFloors[elevatorPosition - 1][i] = tempFloors[elevatorPosition][i]
             # Erase item from original position
@@ -102,7 +102,7 @@ def getListOfPossibleOutcomes(floors):
         # Double equipment move
         for firstPos, secondPos in lengthTwoCombinations:
             # Copy original floor layout
-            tempFloors = list(floors)
+            tempFloors = copy.deepcopy(floors)
             # Move first item
             # Move item up one floor
             tempFloors[elevatorPosition - 1][firstPos] = tempFloors[elevatorPosition][firstPos]
@@ -151,6 +151,7 @@ def Solve(floors):
                 possibleLayout = possibleLayouts.pop(0)
                 # If layout has exit condition, return number of steps taken
                 if isComplete(possibleLayout):
+                    printFloors(possibleLayout)
                     return steps
                 # If layout is valid, add it to newLayouts
                 if isValidLayout(possibleLayout):
@@ -181,3 +182,5 @@ floors1[1][9] = "CG"
 floors1[1][10] = "CM"
 
 print("Minimum number of steps for example:",str(Solve(floorsEx)))
+
+print("Minimum number of steps for part 1:",str(Solve(floors1)))
