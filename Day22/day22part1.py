@@ -45,7 +45,7 @@ def SearchForViablePairs(nodeA):
 # Check each node against every other node (except itself)
 count = 0
 for i in range(nodeXMin, nodeXMax + 1, 1):
-    for j in range(nodeYMin, nodeYMax + 1 , 1):
+    for j in range(nodeYMin, nodeYMax + 1, 1):
         nodeA = (i, j)
         # Node A cannot be empty
         if nodes[ nodeA ][ "used" ] == 0:
